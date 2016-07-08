@@ -69,7 +69,7 @@ safesmsExport.isWAAvailable = function(successCallback, errorCallback) {
     cordova.exec( successCallback, errorCallback, "SMS", "isWhatsAppInstalled", [ ] );
 };
 
-safesmsExport.isWAAvailable = function(successCallback, errorCallback) {              
+safesmsExport.listWa = function(successCallback, errorCallback) {              
     cordova.exec( successCallback, errorCallback, "SMS", "listWA", [ ] );
 };
 
