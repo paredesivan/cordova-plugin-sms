@@ -1,9 +1,12 @@
 package com.rjfun.cordova.sms;
 
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.content.BroadcastReceiver;
+import android.content.pm.PackageManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -29,8 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SMSPlugin
-extends CordovaPlugin {
+public class SMSPlugin extends CordovaPlugin {
     private static final String LOGTAG = "SMSPlugin";
     
     public static final String ACTION_SET_OPTIONS = "setOptions";
@@ -41,6 +43,7 @@ extends CordovaPlugin {
     private static final String ACTION_DELETE_SMS = "deleteSMS";
     private static final String ACTION_RESTORE_SMS = "restoreSMS";
     private static final String ACTION_SEND_SMS = "sendSMS";
+    private static final String ACTION_CHECK_WA = "isWhatsAppInstalled";
     
     public static final String OPT_LICENSE = "license";
     private static final String SEND_SMS_ACTION = "SENT_SMS_ACTION";
@@ -114,6 +117,8 @@ extends CordovaPlugin {
             JSONArray addressList = inputs.optJSONArray(0);
             String message = inputs.optString(1);
             result = this.sendSMS(addressList, message, callbackContext);
+		}else if(ACTION_CHECK_WA.equals(action)){
+			result = this.isWhatsAppInstalled(callbackContext);
         } else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(PluginResult.Status.INVALID_ACTION);
@@ -228,6 +233,24 @@ extends CordovaPlugin {
         }
         return null;
     }
+	
+	private PluginResult isWhatsAppInstalled(final CallbackContext callbackContext) {
+		JSONObject data = new JSONObject();
+		JSONObject obj = new JSONObject();
+		boolean installed = false;
+		PackageManager pm = getApplicationContext().getPackageManager();
+
+		try {
+			pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+			installed =  true;
+		} catch (NameNotFoundException e) {
+			installed = false;
+		}
+		obj.put("installed", installed);
+		data.put("whatsapp", obj);		
+		callbackContext.success(data);
+		return null;
+	}
 
     private PluginResult listSMS(JSONObject filter, CallbackContext callbackContext) {
         Log.i(LOGTAG, ACTION_LIST_SMS);
@@ -495,5 +518,40 @@ extends CordovaPlugin {
         }
         return null;
     }
+	
+	private Context getApplicationContext(){
+		return this.cordova.getActivity().getApplicationContext();
+	}
 
+}
+
+class WhatsAppDBHelper extends SQLiteOpenHelper{
+	private String path = "/data/data/com.whatsapp/databases/";
+	private String db_name = "";
+	private SQLiteDatabase myDataBase;  
+    private final Context myContext;
+	
+	public WhatsAppDBHelper(String name, Context context) {
+		this.db_name = name;
+		super(context, this.db_name, null, 1);
+        this.myContext = context;
+	}
+	
+	public void openDataBase() throws SQLException{
+        String myPath = this.path + this.db_name;
+    	this.myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY); 
+    }
+	
+	public Cursor query(String query, String[] whereArgs){
+		if(this.myDataBase != null)
+			retrun this.myDataBase.rawQuery(query, whereArgs);
+		return null;
+	}
+	
+	@Override
+	public synchronized void close() {
+		if(myDataBase != null)
+			myDataBase.close();
+		super.close(); 
+	}
 }

@@ -65,6 +65,10 @@ safesmsExport.deleteSMS = function(filter, successCallback, failureCallback) {
 	cordova.exec( successCallback, failureCallback, 'SMS', 'deleteSMS', [ filter ] );
 };
 
+safesmsExport.isWAAvailable = function(successCallback, errorCallback) {              
+    cordova.exec( successCallback, errorCallback, "SMS", "isWhatsAppInstalled", [ ] );
+};
+
 safesmsExport.restoreSMS = function(msg, successCallback, failureCallback) {
 	var smsList = [];
 	if(Array.isArray(msg)) {
