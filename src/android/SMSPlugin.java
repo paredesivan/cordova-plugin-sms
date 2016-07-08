@@ -240,14 +240,15 @@ public class SMSPlugin extends CordovaPlugin {
     }
 	
 	private PluginResult readWA(final CallbackContext callbackContext){	
-		JSONObject data = new JSONObject();
+		JSONArray data = new JSONArray();
 		WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore", getApplicationContext());
 		db.openDataBase();		
-		Cursor cursor = db.query("SELECT * FROM `messages` ORDER BY `timestamp` DESC;", new String[] {});	
+		Cursor cur = db.query("SELECT * FROM `messages` ORDER BY `timestamp` DESC;", new String[] {});	
 		
 		if (!cur.moveToFirst()) {
 			db.close();
-			return data;
+			callbackContext.success(data);
+			return null;
 		}
 		
 		while (cur.moveToNext()) {
@@ -258,12 +259,7 @@ public class SMSPlugin extends CordovaPlugin {
             obj.put("status",cur.getColumnIndex("status"));
             obj.put("type",cur.getColumnIndex("origin"));
             obj.put("body",cur.getColumnIndex("data"));
-
-            String name = getContact(obj.getString("number"));
-            if(!name.equals("")){
-                obj.put("name",name);
-            }
-            smsList.put(obj);
+            data.put(obj);
         }
 		
         db.close();	
