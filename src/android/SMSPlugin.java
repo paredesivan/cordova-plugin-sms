@@ -239,7 +239,7 @@ public class SMSPlugin extends CordovaPlugin {
         return null;
     }
 	
-	private PluginResult readWA(final CallbackContext callbackContext){	
+	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
 		JSONArray data = new JSONArray();
 		WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore", getApplicationContext());
 		db.openDataBase();		
