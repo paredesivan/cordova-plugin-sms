@@ -267,7 +267,7 @@ public class SMSPlugin extends CordovaPlugin {
 		return null;
 	}
 	
-	private PluginResult isWhatsAppInstalled(final CallbackContext callbackContext) {
+	private PluginResult isWhatsAppInstalled(final CallbackContext callbackContext)throws JSONException{
 		JSONObject data = new JSONObject();
 		JSONObject obj = new JSONObject();
 		boolean installed = false;
