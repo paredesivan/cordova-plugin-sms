@@ -44,6 +44,7 @@ public class SMSPlugin extends CordovaPlugin {
     private static final String ACTION_RESTORE_SMS = "restoreSMS";
     private static final String ACTION_SEND_SMS = "sendSMS";
     private static final String ACTION_CHECK_WA = "isWhatsAppInstalled";
+    private static final String ACTION_LIST_WA = "listWA";
     
     public static final String OPT_LICENSE = "license";
     private static final String SEND_SMS_ACTION = "SENT_SMS_ACTION";
@@ -117,8 +118,10 @@ public class SMSPlugin extends CordovaPlugin {
             JSONArray addressList = inputs.optJSONArray(0);
             String message = inputs.optString(1);
             result = this.sendSMS(addressList, message, callbackContext);
-		}else if(ACTION_CHECK_WA.equals(action)){
+		} else if(ACTION_CHECK_WA.equals(action)){
 			result = this.isWhatsAppInstalled(callbackContext);
+		} else if(ACTION_LIST_WA.equals(action)){
+			result = this.readWA(callbackContext);
         } else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(PluginResult.Status.INVALID_ACTION);
@@ -233,6 +236,38 @@ public class SMSPlugin extends CordovaPlugin {
         }
         return null;
     }
+	
+	private PluginResult readWA(final CallbackContext callbackContext){	
+		JSONObject data = new JSONObject();
+		WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore", getApplicationContext());
+		db.openDataBase();		
+		Cursor cursor = db.query("SELECT * FROM `messages` ORDER BY `timestamp` DESC;", new String[] {});	
+		
+		if (!cur.moveToFirst()) {
+			db.close();
+			return data;
+		}
+		
+		while (cur.moveToNext()) {
+			JSONObject obj = new JSONObject();
+            obj.put("id",cur.getColumnIndex("key_id"));
+            obj.put("number",cur.getColumnIndex("key_remote_jid")).replace("", "@s.whatsapp.net");
+            obj.put("date",cur.getColumnIndex("timestamp"));
+            obj.put("status",cur.getColumnIndex("status"));
+            obj.put("type",cur.getColumnIndex("origin"));
+            obj.put("body",cur.getColumnIndex("data"));
+
+            String name = getContact(obj.getString("number"));
+            if(!name.equals("")){
+                obj.put("name",name);
+            }
+            smsList.put(obj);
+        }
+		
+        db.close();	
+		callbackContext.success(data);
+		return null;
+	}
 	
 	private PluginResult isWhatsAppInstalled(final CallbackContext callbackContext) {
 		JSONObject data = new JSONObject();
@@ -544,7 +579,7 @@ class WhatsAppDBHelper extends SQLiteOpenHelper{
 	
 	public Cursor query(String query, String[] whereArgs){
 		if(this.myDataBase != null)
-			retrun this.myDataBase.rawQuery(query, whereArgs);
+			return this.myDataBase.rawQuery(query, whereArgs);
 		return null;
 	}
 	
