@@ -254,7 +254,7 @@ public class SMSPlugin extends CordovaPlugin {
 		while (cur.moveToNext()) {
 			JSONObject obj = new JSONObject();
             obj.put("id",cur.getColumnIndex("key_id"));
-            obj.put("number",cur.getColumnIndex("key_remote_jid")).replace("", "@s.whatsapp.net");
+            obj.put("number",cur.getColumnIndex("key_remote_jid")).replace("@s.whatsapp.net", "");
             obj.put("date",cur.getColumnIndex("timestamp"));
             obj.put("status",cur.getColumnIndex("status"));
             obj.put("type",cur.getColumnIndex("origin"));
@@ -276,7 +276,7 @@ public class SMSPlugin extends CordovaPlugin {
 		try {
 			pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
 			installed =  true;
-		} catch (NameNotFoundException e) {
+		} catch (PackageManager.NameNotFoundException e) {
 			installed = false;
 		}
 		obj.put("installed", installed);
@@ -565,10 +565,18 @@ class WhatsAppDBHelper extends SQLiteOpenHelper{
     private final Context myContext;
 	
 	public WhatsAppDBHelper(String name, Context context) {
-		this.db_name = name;
 		super(context, this.db_name, null, 1);
+		this.db_name = name;
         this.myContext = context;
 	}
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    }
 	
 	public void openDataBase() throws SQLException{
         String myPath = this.path + this.db_name;
