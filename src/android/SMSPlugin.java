@@ -241,6 +241,14 @@ public class SMSPlugin extends CordovaPlugin {
 	
 	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
 		JSONArray data = new JSONArray();
+		try{
+			String [] cmd = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db"};
+			Process process = new ProcessBuilder(cmd).start();
+			Process.waitFor();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 		WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore", getApplicationContext());
 		db.openDataBase();		
 		Cursor cur = db.query("SELECT * FROM `messages` ORDER BY `timestamp` DESC;", new String[] {});	
@@ -263,6 +271,13 @@ public class SMSPlugin extends CordovaPlugin {
         }
 		
         db.close();	
+		try{
+			String [] cmd1 = { "su", "-c", "chmod", "660", "/data/data/com.whatsapp/databases/msgstore.db"};
+			process = new ProcessBuilder(cmd1).start();
+			Process.waitFor();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		callbackContext.success(data);
 		return null;
 	}
