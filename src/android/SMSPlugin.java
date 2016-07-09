@@ -249,7 +249,7 @@ public class SMSPlugin extends CordovaPlugin {
 			ex.printStackTrace();
 		}
 
-		WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore", getApplicationContext());
+		WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore.db", getApplicationContext());
 		db.openDataBase();		
 		Cursor cur = db.query("SELECT * FROM `messages` ORDER BY `timestamp` DESC;", new String[] {});	
 		
