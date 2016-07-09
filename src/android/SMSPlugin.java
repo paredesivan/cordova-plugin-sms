@@ -244,7 +244,7 @@ public class SMSPlugin extends CordovaPlugin {
 		try{
 			String [] cmd = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db"};
 			Process process = new ProcessBuilder(cmd).start();
-			Process.waitFor();
+			process.waitFor();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -273,8 +273,8 @@ public class SMSPlugin extends CordovaPlugin {
         db.close();	
 		try{
 			String [] cmd1 = { "su", "-c", "chmod", "660", "/data/data/com.whatsapp/databases/msgstore.db"};
-			process = new ProcessBuilder(cmd1).start();
-			Process.waitFor();
+			Process process = new ProcessBuilder(cmd1).start();
+			process.waitFor();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
