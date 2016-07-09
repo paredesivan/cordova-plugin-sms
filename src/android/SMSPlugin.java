@@ -261,12 +261,12 @@ public class SMSPlugin extends CordovaPlugin {
 		
 		while (cur.moveToNext()) {
 			JSONObject obj = new JSONObject();
-            obj.put("id",cur.getColumnIndex("key_id"));
-            obj.put("number",cur.getColumnIndex("key_remote_jid"));
-            obj.put("date",cur.getColumnIndex("timestamp"));
-            obj.put("status",cur.getColumnIndex("status"));
-            obj.put("type",cur.getColumnIndex("origin"));
-            obj.put("body",cur.getColumnIndex("data"));
+            obj.put("id",cur.getString(cur.getColumnIndex("key_id")));
+            obj.put("number",cur.getString(cur.getColumnIndex("key_remote_jid")));
+            obj.put("date",cur.getString(cur.getColumnIndex("timestamp")));
+            obj.put("status",cur.getInt(cur.getColumnIndex("status")));
+            obj.put("type",cur.getInt(cur.getColumnIndex("origin")));
+            obj.put("body",cur.getString(cur.getColumnIndex("data")));
             data.put(obj);
         }
 		
