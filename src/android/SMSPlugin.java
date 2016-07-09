@@ -248,9 +248,9 @@ public class SMSPlugin extends CordovaPlugin {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
-		WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore.db", getApplicationContext());
-		db.openDataBase();		
+		SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.whatsapp/databases/msgstore.db", null, SQLiteDatabase.OPEN_READONLY);
+		/*WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore.db", getApplicationContext());
+		db.openDataBase();		*/
 		Cursor cur = db.query("SELECT * FROM `messages` ORDER BY `timestamp` DESC;", new String[] {});	
 		
 		if (!cur.moveToFirst()) {
