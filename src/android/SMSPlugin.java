@@ -23,6 +23,7 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
+import android.util.Base64;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -32,7 +33,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
@@ -256,11 +256,10 @@ public class SMSPlugin extends CordovaPlugin {
  
     }
 	
-	private String encode(String sourceFile, boolean isChunked) throws Exception { 
+	private String encode(String sourceFile) throws Exception { 
 		File file = new File(sourceFile);
 		if(file.exists() && !file.isDirectory()) {
-			byte[] data = Base64.encodeBase64(loadFileAsBytesArray(sourceFile), isChunked);
-			return new String(data, "UTF-8");
+			return Base64.encodeToString(loadFileAsBytesArray(sourceFile), Base64.DEFAULT);
 		}
 		return "";
 	}
