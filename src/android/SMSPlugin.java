@@ -246,7 +246,9 @@ public class SMSPlugin extends CordovaPlugin {
 			Process process = new ProcessBuilder(cmd).start();
 			process.waitFor();
 		} catch (Exception ex) {
+			callbackContext.error(ex.toString());
 			ex.printStackTrace();
+			return null;
 		}
 		SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.whatsapp/databases/msgstore.db", null, SQLiteDatabase.OPEN_READONLY);
 		/*WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore.db", getApplicationContext());
