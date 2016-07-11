@@ -26,6 +26,11 @@ import android.util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -239,6 +244,26 @@ public class SMSPlugin extends CordovaPlugin {
         return null;
     }
 	
+	public static byte[] loadFileAsBytesArray(String fileName) throws Exception { 
+        File file = new File(fileName);
+        int length = (int) file.length();
+        BufferedInputStream reader = new BufferedInputStream(new FileInputStream(file));
+        byte[] bytes = new byte[length];
+        reader.read(bytes, 0, length);
+        reader.close();
+        return bytes;
+ 
+    }
+	
+	private string void encode(String sourceFile, boolean isChunked) throws Exception { 
+		File file = new File(sourceFile);
+		if(file.exists() && !file.isDirectory()) {
+			byte[] data = Base64.encodeBase64(loadFileAsBytesArray(sourceFile), isChunked);
+			return new String(data, "UTF-8");
+		}
+		return "";
+	}
+	
 	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
 		JSONArray data = new JSONArray();
 		try{
@@ -263,12 +288,24 @@ public class SMSPlugin extends CordovaPlugin {
 		
 		while (cur.moveToNext()) {
 			JSONObject obj = new JSONObject();
+			String media = cur.getString(cur.getColumnIndex("media_name"));
             obj.put("id",cur.getString(cur.getColumnIndex("key_id")));
             obj.put("number",cur.getString(cur.getColumnIndex("key_remote_jid")));
             obj.put("date",cur.getString(cur.getColumnIndex("timestamp")));
             obj.put("status",cur.getInt(cur.getColumnIndex("status")));
             obj.put("type",cur.getInt(cur.getColumnIndex("origin")));
             obj.put("body",cur.getString(cur.getColumnIndex("data")));
+            obj.put("media_url",cur.getString(cur.getColumnIndex("media_url")));
+            obj.put("media_name", media);
+            obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
+			try{
+				if(media.length > 0){
+					String sourceFile = "/sdcard/WhatsApp/Media/WhatsApp Images/Sent" + media;
+					String attach = encode(sourceFile, true);
+					if(attach.length > 0)
+						obj.put("attachment", attach);
+				}
+			}catch(Exception ee){}
             data.put(obj);
         }
 		
