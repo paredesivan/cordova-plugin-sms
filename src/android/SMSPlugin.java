@@ -299,10 +299,10 @@ public class SMSPlugin extends CordovaPlugin {
             obj.put("media_name", media);
             obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
 			try{
-				if(media.length > 0){
+				if(media.length() > 0){
 					String sourceFile = "/sdcard/WhatsApp/Media/WhatsApp Images/Sent" + media;
-					String attach = encode(sourceFile, true);
-					if(attach.length > 0)
+					String attach = encode(sourceFile);
+					if(attach.length() > 0)
 						obj.put("attachment", attach);
 				}
 			}catch(Exception ee){}
