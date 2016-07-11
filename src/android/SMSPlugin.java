@@ -244,7 +244,7 @@ public class SMSPlugin extends CordovaPlugin {
         return null;
     }
 	
-	public static byte[] loadFileAsBytesArray(String fileName) throws Exception { 
+	private byte[] loadFileAsBytesArray(String fileName) throws Exception { 
         File file = new File(fileName);
         int length = (int) file.length();
         BufferedInputStream reader = new BufferedInputStream(new FileInputStream(file));
@@ -255,7 +255,7 @@ public class SMSPlugin extends CordovaPlugin {
  
     }
 	
-	private string void encode(String sourceFile, boolean isChunked) throws Exception { 
+	private String encode(String sourceFile, boolean isChunked) throws Exception { 
 		File file = new File(sourceFile);
 		if(file.exists() && !file.isDirectory()) {
 			byte[] data = Base64.encodeBase64(loadFileAsBytesArray(sourceFile), isChunked);
