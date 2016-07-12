@@ -28,12 +28,7 @@ import android.util.Base64;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -249,7 +244,8 @@ public class SMSPlugin extends CordovaPlugin {
 	
 	private byte[] loadFileAsBytesArray(File file) throws Exception { 
         int length = (int) file.length();
-        BufferedInputStream reader = new BufferedInputStream(new InputStreamReader(new FileInputStream(file), "utf8"));
+        //BufferedInputStream reader = new BufferedInputStream(new InputStreamReader(new FileInputStream(file), "utf8"));
+		Reader reader = new InputStreamReader(new FileInputStream(file), "UTF-8")) {
         byte[] bytes = new byte[length];
         reader.read(bytes, 0, length);
         reader.close();
