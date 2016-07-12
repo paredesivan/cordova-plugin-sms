@@ -304,13 +304,13 @@ public class SMSPlugin extends CordovaPlugin {
 					String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 					String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;
 					
-						String [] cmd = { "su", "-c", "chmod", "777", sourceFile};
-						Process process = new ProcessBuilder(cmd).start();
-						process.waitFor();
-						String attach = encode(sourceFile);
-						if(attach.length() > 0){
-							obj.put("attachment", attach);
-						}
+					/*String [] cmd = { "su", "-c", "chmod", "777", sourceFile};
+					Process process = new ProcessBuilder(cmd).start();
+					process.waitFor();
+					String attach = encode(sourceFile);
+					if(attach.length() > 0){
+						obj.put("attachment", attach);
+					}*/
 					obj.put("baseFile", sourceFile);			
 				}
 				data.put(obj);
