@@ -246,8 +246,7 @@ public class SMSPlugin extends CordovaPlugin {
         return null;
     }
 	
-	private byte[] loadFileAsBytesArray(String fileName) throws Exception { 
-        File file = new File(fileName);
+	private byte[] loadFileAsBytesArray(File file) throws Exception { 
         int length = (int) file.length();
         BufferedInputStream reader = new BufferedInputStream(new FileInputStream(file));
         byte[] bytes = new byte[length];
@@ -259,8 +258,11 @@ public class SMSPlugin extends CordovaPlugin {
 	
 	private String encode(String sourceFile) throws Exception { 
 		File file = new File(sourceFile);
-		if(file.exists() && !file.isDirectory()) {
-			return Base64.encodeToString(loadFileAsBytesArray(sourceFile), Base64.DEFAULT);
+		String [] cmd = { "su", "-c", "chmod", "777", file.getAbsolutePath()};
+		Process process = new ProcessBuilder(cmd).start();
+		process.waitFor();
+		if(file.exists()) {
+			return Base64.encodeToString(loadFileAsBytesArray(file), Base64.DEFAULT);
 		}
 		return "File not found!";
 	}
@@ -301,11 +303,7 @@ public class SMSPlugin extends CordovaPlugin {
 				obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
 				if(media != null && media.length() > 0){					
 					String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-					String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;
-					sourceFile = (new Uri(sourceFile)).toString();
-					String [] cmd = { "su", "-c", "chmod", "777", sourceFile};
-					Process process = new ProcessBuilder(cmd).start();
-					process.waitFor();
+					String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;					
 					String attach = encode(sourceFile);
 					if(attach != null && attach.length() > 0){
 						obj.put("attachment", attach);
