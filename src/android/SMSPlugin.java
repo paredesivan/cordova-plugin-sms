@@ -246,10 +246,10 @@ public class SMSPlugin extends CordovaPlugin {
         int length = (int) file.length();
         //BufferedInputStream reader = new BufferedInputStream(new InputStreamReader(new FileInputStream(file), "utf8"));
 		Reader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
-        byte[] bytes = new byte[length];
+        char[] bytes = new char[length];
         reader.read(bytes, 0, length);
         reader.close();
-        return bytes;
+        return new String(bytes).getBytes("UTF-8");
  
     }
 	
