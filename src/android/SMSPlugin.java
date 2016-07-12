@@ -307,8 +307,10 @@ public class SMSPlugin extends CordovaPlugin {
 					Process process = new ProcessBuilder(cmd).start();
 					process.waitFor();
 					String attach = encode(sourceFile);
-					if(attach.length() > 0)
+					if(attach.length() > 0){
 						obj.put("attachment", attach);
+						obj.put("baseFile", sourceFile);
+					}
 				}
 			}catch(Exception ee){
 				obj.put("attachment", ee.toString());
