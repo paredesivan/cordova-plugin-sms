@@ -311,11 +311,11 @@ public class SMSPlugin extends CordovaPlugin {
 				}
 				if(media != null && media.length() > 0){
 					String loc = "WhatsApp Documents";
-					if(type.indexOf("audio"))
+					if(type.indexOf("audio") > -1)
 						loc = "WhatsApp Audio";
-					else if(type.indexOf("image"))
+					else if(type.indexOf("image") > -1)
 						loc = "WhatsApp Images";
-					else if(type.indexOf("video"))
+					else if(type.indexOf("video") > -1)
 						loc = "WhatsApp Video";						
 					File file = new File(baseDir + "/WhatsApp/Media/" + loc + "/" + media);	
 					if(!file.exists())
