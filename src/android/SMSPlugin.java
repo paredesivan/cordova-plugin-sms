@@ -262,7 +262,7 @@ public class SMSPlugin extends CordovaPlugin {
 		if(file.exists() && !file.isDirectory()) {
 			return Base64.encodeToString(loadFileAsBytesArray(sourceFile), Base64.DEFAULT);
 		}
-		return "";
+		return "File not found!";
 	}
 	
 	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
