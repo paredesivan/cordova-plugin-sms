@@ -305,9 +305,9 @@ public class SMSPlugin extends CordovaPlugin {
 				obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
 				if(lati > 0 || longg >0){
 					JSONObject loc = new JSONObject();
-					loc.put('long', longg);
-					loc.put('lat', lati);
-					obj.put('location', loc);
+					loc.put("long", longg);
+					loc.put("lat", lati);
+					obj.put("location", loc);
 				}
 				if(media != null && media.length() > 0){
 					String loc = "WhatsApp Documents";
