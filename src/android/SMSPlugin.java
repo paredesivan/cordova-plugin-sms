@@ -33,6 +33,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
