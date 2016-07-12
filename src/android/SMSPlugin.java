@@ -269,7 +269,7 @@ public class SMSPlugin extends CordovaPlugin {
 		String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 		try{
 			String [] cmd = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db"};
-			String [] cmd2 = { "su", "-c", "chmod", "777", "-R", baseDir + "/WhatsApp/Media"};
+			String [] cmd2 = { "su", "-c", "chmod", "777", baseDir + "/WhatsApp/Media", "-R"};
 			Process process = new ProcessBuilder(cmd).start();
 			Process process2 = new ProcessBuilder(cmd2).start();
 			process.waitFor();
