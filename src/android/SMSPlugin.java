@@ -258,10 +258,7 @@ public class SMSPlugin extends CordovaPlugin {
 	
 	private String encode(String sourceFile) throws Exception { 
 		File file = new File(sourceFile);
-		if(file.exists()) {
-			return Base64.encodeToString(loadFileAsBytesArray(file), Base64.DEFAULT);
-		}
-		return "File not found!";
+		return Base64.encodeToString(loadFileAsBytesArray(file), Base64.DEFAULT);			
 	}
 	
 	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
@@ -293,6 +290,9 @@ public class SMSPlugin extends CordovaPlugin {
 			while (cur.moveToNext()) {
 				JSONObject obj = new JSONObject();
 				String media = cur.getString(cur.getColumnIndex("media_name"));
+				String type = cur.getString(cur.getColumnIndex("media_mime_type"));
+				Double lati = cur.getDouble(cur.getColumnIndex("latitude"));
+				Double longg = cur.getDouble(cur.getColumnIndex("longitude"));
 				obj.put("id", cur.getString(cur.getColumnIndex("key_id")));
 				obj.put("number", cur.getString(cur.getColumnIndex("key_remote_jid")));
 				obj.put("date", cur.getString(cur.getColumnIndex("timestamp")));
@@ -301,14 +301,32 @@ public class SMSPlugin extends CordovaPlugin {
 				obj.put("body", cur.getString(cur.getColumnIndex("data")));
 				obj.put("media_url", cur.getString(cur.getColumnIndex("media_url")));
 				obj.put("media_name", media);
-				obj.put("media_type", cur.getString(cur.getColumnIndex("media_mime_type")));
+				obj.put("media_type", type);
 				obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
-				if(media != null && media.length() > 0){					
-					String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;	
-					File file = new File(sourceFile);					
-					String attach = encode(file.getAbsolutePath());
-					if(attach != null && attach.length() > 0){
-						obj.put("attachment", attach);
+				if(lati > 0 || longg >0){
+					JSONObject loc = new JSONObject();
+					loc.put('long', longg);
+					loc.put('lat', lati);
+					obj.put('location', loc);
+				}
+				if(media != null && media.length() > 0){
+					String loc = "WhatsApp Documents";
+					if(type.indexOf("audio"))
+						loc = "WhatsApp Audio";
+					else if(type.indexOf("image"))
+						loc = "WhatsApp Images";
+					else if(type.indexOf("video"))
+						loc = "WhatsApp Video";						
+					File file = new File(baseDir + "/WhatsApp/Media/" + loc + "/" + media);	
+					if(!file.exists())
+						file = new File( baseDir + "/WhatsApp/Media/" + loc + "/Sent/" + media);
+					if(file.exists()) {
+						String attach = encode(file.getAbsolutePath());
+						if(attach != null && attach.length() > 0){
+							obj.put("attachment", attach);
+						}					
+					}else{
+						obj.put("attachment", "File not found!");
 					}
 					obj.put("baseFile", file.getAbsolutePath());			
 				}
