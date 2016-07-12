@@ -301,23 +301,26 @@ public class SMSPlugin extends CordovaPlugin {
 				obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
 				
 				if(media.length() > 0){					
-					String baseDir = Environment.getExternalStorageDirectory().getPath();
+					String baseDir = Environment.getExternalStorageDirectory();
 					String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;
 					
-					/*String [] cmd = { "su", "-c", "chmod", "777", sourceFile};
+					String [] cmd = { "su", "-c", "chmod", "777", sourceFile};
 					Process process = new ProcessBuilder(cmd).start();
 					process.waitFor();
 					String attach = encode(sourceFile);
 					if(attach.length() > 0){
 						obj.put("attachment", attach);
-					}*/
+					}
 					obj.put("baseFile", sourceFile);			
 				}
 				data.put(obj);
 			}
 		}catch(Exception ee){
 			db.close();	
-			callbackContext.error(ee.toString());
+			StringWriter sw = new StringWriter();
+			ee.printStackTrace(new PrintWriter(sw));
+			String exceptionAsString = sw.toString();
+			callbackContext.error(exceptionAsString);
 			return null;
 		}
 		
