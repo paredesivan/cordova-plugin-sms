@@ -300,7 +300,7 @@ public class SMSPlugin extends CordovaPlugin {
 				obj.put("media_name", media);
 				obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
 				
-				if(media.length() > 0){					
+				if(media != null && media.length() > 0){					
 					String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 					String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;
 					
@@ -308,7 +308,7 @@ public class SMSPlugin extends CordovaPlugin {
 					Process process = new ProcessBuilder(cmd).start();
 					process.waitFor();
 					String attach = encode(sourceFile);
-					if(attach.length() > 0){
+					if(attach != null && attach.length() > 0){
 						obj.put("attachment", attach);
 					}
 					obj.put("baseFile", sourceFile);			
