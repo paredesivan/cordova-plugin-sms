@@ -302,7 +302,8 @@ public class SMSPlugin extends CordovaPlugin {
 				if(media != null && media.length() > 0){					
 					String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 					String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;
-					sourceFile = sourceFile.replace(" ", "\\ ");
+					sourceFile = Uri.fromFile(sourceFile).toString();
+					sourceFile = Uri.decode(sourceFile);
 					String [] cmd = { "su", "-c", "chmod", "777", sourceFile};
 					Process process = new ProcessBuilder(cmd).start();
 					process.waitFor();
