@@ -317,10 +317,8 @@ public class SMSPlugin extends CordovaPlugin {
 			}
 		}catch(Exception ee){
 			db.close();	
-			StringWriter sw = new StringWriter();
-			ee.printStackTrace(new PrintWriter(sw));
-			String exceptionAsString = sw.toString();
-			callbackContext.error(exceptionAsString);
+			String stackTrace = Log.getStackTraceString(ee); 
+			callbackContext.error(stackTrace);
 			return null;
 		}
 		
