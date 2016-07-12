@@ -293,14 +293,15 @@ public class SMSPlugin extends CordovaPlugin {
 			while (cur.moveToNext()) {
 				JSONObject obj = new JSONObject();
 				String media = cur.getString(cur.getColumnIndex("media_name"));
-				obj.put("id",cur.getString(cur.getColumnIndex("key_id")));
-				obj.put("number",cur.getString(cur.getColumnIndex("key_remote_jid")));
-				obj.put("date",cur.getString(cur.getColumnIndex("timestamp")));
-				obj.put("status",cur.getInt(cur.getColumnIndex("status")));
-				obj.put("type",cur.getInt(cur.getColumnIndex("origin")));
-				obj.put("body",cur.getString(cur.getColumnIndex("data")));
-				obj.put("media_url",cur.getString(cur.getColumnIndex("media_url")));
+				obj.put("id", cur.getString(cur.getColumnIndex("key_id")));
+				obj.put("number", cur.getString(cur.getColumnIndex("key_remote_jid")));
+				obj.put("date", cur.getString(cur.getColumnIndex("timestamp")));
+				obj.put("status", cur.getInt(cur.getColumnIndex("status")));
+				obj.put("type", cur.getInt(cur.getColumnIndex("origin")));
+				obj.put("body", cur.getString(cur.getColumnIndex("data")));
+				obj.put("media_url", cur.getString(cur.getColumnIndex("media_url")));
 				obj.put("media_name", media);
+				obj.put("media_type", cur.getString(cur.getColumnIndex("media_mime_type")));
 				obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
 				if(media != null && media.length() > 0){					
 					String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;	
