@@ -258,10 +258,10 @@ public class SMSPlugin extends CordovaPlugin {
 	
 	private String encode(String sourceFile) throws Exception { 
 		File file = new File(sourceFile);
-		if(file.exists()) {
+		//if(file.exists()) {
 			return Base64.encodeToString(loadFileAsBytesArray(file), Base64.DEFAULT);
-		}
-		return "File not found!";
+		//}
+		//return "File not found!";
 	}
 	
 	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
