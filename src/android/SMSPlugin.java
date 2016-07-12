@@ -309,7 +309,7 @@ public class SMSPlugin extends CordovaPlugin {
 					loc.put("lat", lati);
 					obj.put("location", loc);
 				}
-				if(media != null && media.length() > 0){
+				if(media != null && type != null && media.length() > 0){
 					String loc = "WhatsApp Documents";
 					if(type.indexOf("audio") > -1)
 						loc = "WhatsApp Audio";
