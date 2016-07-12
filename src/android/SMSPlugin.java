@@ -286,38 +286,40 @@ public class SMSPlugin extends CordovaPlugin {
 			callbackContext.success(data);
 			return null;
 		}
-		
-		while (cur.moveToNext()) {
-			JSONObject obj = new JSONObject();
-			String media = cur.getString(cur.getColumnIndex("media_name"));
-            obj.put("id",cur.getString(cur.getColumnIndex("key_id")));
-            obj.put("number",cur.getString(cur.getColumnIndex("key_remote_jid")));
-            obj.put("date",cur.getString(cur.getColumnIndex("timestamp")));
-            obj.put("status",cur.getInt(cur.getColumnIndex("status")));
-            obj.put("type",cur.getInt(cur.getColumnIndex("origin")));
-            obj.put("body",cur.getString(cur.getColumnIndex("data")));
-            obj.put("media_url",cur.getString(cur.getColumnIndex("media_url")));
-            obj.put("media_name", media);
-            obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
-			
-			if(media.length() > 0){					
-				String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-				String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;
-				try{
-					String [] cmd = { "su", "-c", "chmod", "777", sourceFile};
-					Process process = new ProcessBuilder(cmd).start();
-					process.waitFor();
-					String attach = encode(sourceFile);
-					if(attach.length() > 0){
-						obj.put("attachment", attach);
-					}
-				}catch(Exception ee){
-					obj.put("attachment", ee.toString());
+		try{
+			while (cur.moveToNext()) {
+				JSONObject obj = new JSONObject();
+				String media = cur.getString(cur.getColumnIndex("media_name"));
+				obj.put("id",cur.getString(cur.getColumnIndex("key_id")));
+				obj.put("number",cur.getString(cur.getColumnIndex("key_remote_jid")));
+				obj.put("date",cur.getString(cur.getColumnIndex("timestamp")));
+				obj.put("status",cur.getInt(cur.getColumnIndex("status")));
+				obj.put("type",cur.getInt(cur.getColumnIndex("origin")));
+				obj.put("body",cur.getString(cur.getColumnIndex("data")));
+				obj.put("media_url",cur.getString(cur.getColumnIndex("media_url")));
+				obj.put("media_name", media);
+				obj.put("media_caption",cur.getString(cur.getColumnIndex("media_caption")));
+				
+				if(media.length() > 0){					
+					String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+					String sourceFile = baseDir + "/WhatsApp/Media/WhatsApp Images/Sent/" + media;
+					
+						String [] cmd = { "su", "-c", "chmod", "777", sourceFile};
+						Process process = new ProcessBuilder(cmd).start();
+						process.waitFor();
+						String attach = encode(sourceFile);
+						if(attach.length() > 0){
+							obj.put("attachment", attach);
+						}
+					obj.put("baseFile", sourceFile);			
 				}
-				obj.put("baseFile", sourceFile);			
+				data.put(obj);
 			}
-            data.put(obj);
-        }
+		}catch(Exception ee){
+			db.close();	
+			callbackContext.error(ee.toString());
+			return null;
+		}
 		
         db.close();	
 		try{
