@@ -267,12 +267,12 @@ public class SMSPlugin extends CordovaPlugin {
 		if (i > 0) {
 			extension = fileName.substring(i+1);
 		}
-		if(extension == "jpg" || extension == "gif" || extension == "png")
+		if(extension.equals("jpg") || extension.equals("gif") || extension.equals("png"))
 			return "image";
-		else if(extension == "3gp" || extension == "caf" || extension == "wav" || extension == "mp3" || extension == "wma" ||
-			extension == "ogg" || extension == "aif" || extension == "aif" || extension == "aac" || extension == "m4a")
+		else if(extension.equals("3gp") || extension.equals("caf") || extension.equals("wav") || extension.equals("mp3") || extension.equals("wma") ||
+			extension.equals("ogg") || extension.equals("aif") || extension.equals("aif") || extension.equals("aac") || extension.equals("m4a"))
 			return "audio";
-        else if(extension == "3gp" || extension == "mp4" || extension == "mov" || extension == "avi")
+        else if(extension.equals("3gp") || extension.equals("mp4") || extension.equals("mov") || extension.equals("avi"))
 			return "video";
 		return extension;
 	}
