@@ -330,14 +330,14 @@ public class SMSPlugin extends CordovaPlugin {
 						type = getExtType(media);
 					}
 					if(type != ""){
-						String filePath = baseDir + "/WhatsApp/Media/WhatsApp " + loc + "/" + media;
 						String loc = "Documents";
 						if(type.indexOf("audio") > -1)
 							loc = "Audio";
 						else if(type.indexOf("image") > -1)
 							loc = "Images";
 						else if(type.indexOf("video") > -1)
-							loc = "Video";						
+							loc = "Video";					
+						String filePath = baseDir + "/WhatsApp/Media/WhatsApp " + loc + "/" + media;	
 						File file = new File(filePath);	
 						if(!file.exists()){
 							filePath = baseDir + "/WhatsApp/Media/WhatsApp " + loc + "/Sent/" + media;
