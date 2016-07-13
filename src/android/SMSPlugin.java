@@ -330,16 +330,19 @@ public class SMSPlugin extends CordovaPlugin {
 						type = getExtType(media);
 					}
 					if(type != ""){
-						String loc = "WhatsApp Documents";
+						String filePath = baseDir + "/WhatsApp/Media/WhatsApp " + loc + "/" + media;
+						String loc = "Documents";
 						if(type.indexOf("audio") > -1)
-							loc = "WhatsApp Audio";
+							loc = "Audio";
 						else if(type.indexOf("image") > -1)
-							loc = "WhatsApp Images";
+							loc = "Images";
 						else if(type.indexOf("video") > -1)
-							loc = "WhatsApp Video";						
-						File file = new File(baseDir + "/WhatsApp/Media/" + loc + "/" + media);	
-						if(!file.exists())
-							file = new File( baseDir + "/WhatsApp/Media/" + loc + "/Sent/" + media);
+							loc = "Video";						
+						File file = new File(filePath);	
+						if(!file.exists()){
+							filePath = baseDir + "/WhatsApp/Media/WhatsApp " + loc + "/Sent/" + media;
+							file = new File(filePath);
+						}
 						if(file.exists()) {
 							String attach = encode(file.getAbsolutePath());
 							if(attach != null && attach.length() > 0){
@@ -348,7 +351,7 @@ public class SMSPlugin extends CordovaPlugin {
 						}else{
 							obj.put("attachment", "File not found!");
 						}
-						obj.put("baseFile", file.getAbsolutePath());	
+						obj.put("baseFile", filePath);	
 					}					
 				}
 				data.put(obj);
