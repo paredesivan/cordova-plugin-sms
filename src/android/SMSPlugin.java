@@ -328,6 +328,7 @@ public class SMSPlugin extends CordovaPlugin {
 				if(media != null && media.length() > 0){
 					if(type == null){
 						type = getExtType(media);
+						obj.put("media_type", type);
 					}
 					if(type != ""){
 						String loc = "Documents";
