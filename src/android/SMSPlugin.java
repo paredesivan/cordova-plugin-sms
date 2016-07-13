@@ -273,7 +273,9 @@ public class SMSPlugin extends CordovaPlugin {
 			extension.equals("ogg") || extension.equals("aif") || extension.equals("aif") || extension.equals("aac") || extension.equals("m4a"))
 			return "audio";
         else if(extension.equals("3gp") || extension.equals("mp4") || extension.equals("mov") || extension.equals("avi"))
-			return "video";
+			return "video"; 
+		else if(extension.equals("xls") || extension.equals("xlsx") || extension.equals("doc") || extension.equals("docx") || extension.equals("ppt") || extension.equals("pptx"))
+			return "other";
 		return extension;
 	}
 	
@@ -326,9 +328,9 @@ public class SMSPlugin extends CordovaPlugin {
 					obj.put("location", loc);
 				}				
 				if(media != null && media.length() > 0){
+					obj.put("media_type2", getExtType(media));
 					if(type == null){
 						type = getExtType(media);
-						obj.put("media_type", type);
 					}
 					if(type != ""){
 						String loc = "Documents";
