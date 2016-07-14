@@ -307,6 +307,7 @@ public class SMSPlugin extends CordovaPlugin {
 		SQLiteDatabase db = SQLiteDatabase.openDatabase(baseDir + "/sync_db/msg.db", null, SQLiteDatabase.OPEN_READONLY);
 		/*WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore.db", getApplicationContext());
 		db.openDataBase();		*/
+		db.rawQuery("PRAGMA locking_mode = NORMAL", null);
 		Cursor cur = db.rawQuery("SELECT * FROM `messages` ORDER BY `timestamp` DESC LIMIT 1000;", null);	
 		
 		if (!cur.moveToFirst()) {
