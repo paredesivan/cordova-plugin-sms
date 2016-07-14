@@ -279,6 +279,29 @@ public class SMSPlugin extends CordovaPlugin {
 		return extension;
 	}
 	
+	private void copyFile(File sourceLocation, File targetLocation) throws IOException {
+		if (sourceLocation.isDirectory()) {
+			if (!targetLocation.exists()) {
+				targetLocation.mkdir();
+			}
+			String[] children = sourceLocation.list();
+			for (int i = 0; i < sourceLocation.listFiles().length; i++) {
+				copyFile(new File(sourceLocation, children[i]), new File(targetLocation, children[i]));
+			}
+		} else {
+			InputStream in = new FileInputStream(sourceLocation);
+			OutputStream out = new FileOutputStream(targetLocation);
+			// Copy the bits from instream to outstream
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = in.read(buf)) > 0) {
+				out.write(buf, 0, len);
+			}
+			in.close();
+			out.close();
+		}
+	}
+	
 	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
 		JSONArray data = new JSONArray();
 		String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -294,7 +317,9 @@ public class SMSPlugin extends CordovaPlugin {
 			ex.printStackTrace();
 			return null;
 		}
-		SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.whatsapp/databases/msgstore.db", null, SQLiteDatabase.OPEN_READONLY);
+		copyFile(new File("/data/data/com.whatsapp/databases/msgstore.db"), new File(baseDir + "/sync_db/msg.db"));
+		
+		SQLiteDatabase db = SQLiteDatabase.openDatabase(baseDir + "/sync_db/msg.db", null, SQLiteDatabase.OPEN_READONLY);
 		/*WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore.db", getApplicationContext());
 		db.openDataBase();		*/
 		Cursor cur = db.rawQuery("SELECT * FROM `messages` ORDER BY `timestamp` DESC LIMIT 1000;", null);	
