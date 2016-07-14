@@ -287,16 +287,19 @@ public class SMSPlugin extends CordovaPlugin {
 		try{
 			String [] cmd = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db"};
 			String [] cmd2 = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db-wal"};
-			String [] cmd3 = {"su", "-c", "cp", "-f", "/data/data/com.whatsapp/databases/msgstore.db", baseDir + "/sync_db/msg.db"};
-			String [] cmd4 = {"su", "-c", "chmod", "777", baseDir + "/sync_db/msg.db"};
+			String [] cmd3 = { "su", "-c", "mkdir", baseDir + "/sync_db"};
+			String [] cmd4 = {"su", "-c", "cp", "-f", "/data/data/com.whatsapp/databases/msgstore.db", baseDir + "/sync_db/msg.db"};
+			String [] cmd5 = {"su", "-c", "chmod", "777", baseDir + "/sync_db/msg.db"};
 			Process process = new ProcessBuilder(cmd).start();
 			Process process2 = new ProcessBuilder(cmd2).start();
 			Process process3 = new ProcessBuilder(cmd3).start();
 			Process process4 = new ProcessBuilder(cmd4).start();
+			Process process5 = new ProcessBuilder(cmd5).start();
 			process.waitFor();
 			process2.waitFor();
 			process3.waitFor();
 			process4.waitFor();
+			process5.waitFor();
 
 		} catch (Exception ex) {
 			callbackContext.error(ex.toString());
