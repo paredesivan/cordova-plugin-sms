@@ -56,6 +56,7 @@ public class SMSPlugin extends CordovaPlugin {
     private static final String ACTION_SEND_SMS = "sendSMS";
     private static final String ACTION_CHECK_WA = "isWhatsAppInstalled";
     private static final String ACTION_LIST_WA = "listWA";
+	private static final String ACIION_GET_FILE = "getFile";
     
     public static final String OPT_LICENSE = "license";
     private static final String SEND_SMS_ACTION = "SENT_SMS_ACTION";
@@ -133,6 +134,9 @@ public class SMSPlugin extends CordovaPlugin {
 			result = this.isWhatsAppInstalled(callbackContext);
 		} else if(ACTION_LIST_WA.equals(action)){
 			result = this.readWA(callbackContext);
+		} else if(ACTION_GET_FILE.equals(action)){
+            String fileName = inputs.optString(0);
+			result = this.getFile(fileName, callbackContext);
         } else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(PluginResult.Status.INVALID_ACTION);
@@ -279,6 +283,29 @@ public class SMSPlugin extends CordovaPlugin {
 		else if(extension.equals("xls") || extension.equals("xlsx") || extension.equals("doc") || extension.equals("docx") || extension.equals("ppt") || extension.equals("pptx"))
 			return "other";
 		return extension;
+	}
+	
+	private PluginResult getFile(String fileName, CallbackContext callbackContext)throws JSONException{	
+		JSONObject obj = new JSONObject();
+		File file = new File(fileName);
+		
+		try{
+			if(file.exists()) {
+				String attach = encode(file.getAbsolutePath());
+				if(attach != null && attach.length() > 0){
+					obj.put("file", attach);
+				}					
+			}else{
+				obj.put("file", "File not found!");
+			}
+		} catch (Exception ex) {
+			String stackTrace = Log.getStackTraceString(ex); 
+			callbackContext.error(stackTrace);
+			return null;
+		}
+		
+		callbackContext.success(obj);
+		return null;
 	}
 	
 	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
