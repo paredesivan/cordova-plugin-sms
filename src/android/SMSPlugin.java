@@ -284,7 +284,7 @@ public class SMSPlugin extends CordovaPlugin {
 		String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 		try{
 			String [] cmd = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db"};
-			String [] cmd2 = { "su", "-c", "chmod", "777", baseDir + "/WhatsApp/Media", "-R"};
+			String [] cmd = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db-wal"};
 			Process process = new ProcessBuilder(cmd).start();
 			Process process2 = new ProcessBuilder(cmd2).start();
 			process.waitFor();
@@ -297,7 +297,7 @@ public class SMSPlugin extends CordovaPlugin {
 		SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.whatsapp/databases/msgstore.db", null, SQLiteDatabase.OPEN_READONLY);
 		/*WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore.db", getApplicationContext());
 		db.openDataBase();		*/
-		Cursor cur = db.rawQuery("SELECT * FROM `messages` ORDER BY `timestamp` DESC;", null);	
+		Cursor cur = db.rawQuery("SELECT * FROM `messages` ORDER BY `timestamp` DESC LIMIT 1000;", null);	
 		
 		if (!cur.moveToFirst()) {
 			db.close();
