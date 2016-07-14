@@ -31,6 +31,8 @@ import java.security.NoSuchAlgorithmException;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
@@ -279,7 +281,7 @@ public class SMSPlugin extends CordovaPlugin {
 		return extension;
 	}
 	
-	private void copyFile(File sourceLocation, File targetLocation) throws IOException {
+	private void copyFile(File sourceLocation, File targetLocation) throws Exception {
 		if (sourceLocation.isDirectory()) {
 			if (!targetLocation.exists()) {
 				targetLocation.mkdir();
