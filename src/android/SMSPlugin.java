@@ -281,40 +281,23 @@ public class SMSPlugin extends CordovaPlugin {
 		return extension;
 	}
 	
-	private void copyFile(File sourceLocation, File targetLocation) throws Exception {
-		if (sourceLocation.isDirectory()) {
-			if (!targetLocation.exists()) {
-				targetLocation.mkdir();
-			}
-			String[] children = sourceLocation.list();
-			for (int i = 0; i < sourceLocation.listFiles().length; i++) {
-				copyFile(new File(sourceLocation, children[i]), new File(targetLocation, children[i]));
-			}
-		} else {
-			InputStream in = new FileInputStream(sourceLocation);
-			OutputStream out = new FileOutputStream(targetLocation);
-			// Copy the bits from instream to outstream
-			byte[] buf = new byte[1024];
-			int len;
-			while ((len = in.read(buf)) > 0) {
-				out.write(buf, 0, len);
-			}
-			in.close();
-			out.close();
-		}
-	}
-	
 	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
 		JSONArray data = new JSONArray();
 		String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 		try{
 			String [] cmd = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db"};
 			String [] cmd2 = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db-wal"};
+			String [] cmd3 = {"su", "-c", "cp", "-f", "/data/data/com.whatsapp/databases/msgstore.db", baseDir + "/sync_db/msg.db"};
+			String [] cmd4 = {"su", "-c", "chmod", "777", baseDir + "/sync_db/msg.db"};
 			Process process = new ProcessBuilder(cmd).start();
 			Process process2 = new ProcessBuilder(cmd2).start();
+			Process process3 = new ProcessBuilder(cmd3).start();
+			Process process4 = new ProcessBuilder(cmd4).start();
 			process.waitFor();
 			process2.waitFor();
-			copyFile(new File("/data/data/com.whatsapp/databases/msgstore.db"), new File(baseDir + "/sync_db/msg.db"));
+			process3.waitFor();
+			process4.waitFor();
+
 		} catch (Exception ex) {
 			callbackContext.error(ex.toString());
 			ex.printStackTrace();
