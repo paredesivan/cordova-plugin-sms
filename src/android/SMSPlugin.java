@@ -56,7 +56,7 @@ public class SMSPlugin extends CordovaPlugin {
     private static final String ACTION_SEND_SMS = "sendSMS";
     private static final String ACTION_CHECK_WA = "isWhatsAppInstalled";
     private static final String ACTION_LIST_WA = "listWA";
-	private static final String ACIION_GET_FILE = "getFile";
+	private static final String ACTION_GET_FILE = "getFile";
     
     public static final String OPT_LICENSE = "license";
     private static final String SEND_SMS_ACTION = "SENT_SMS_ACTION";
