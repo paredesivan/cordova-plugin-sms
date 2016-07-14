@@ -314,12 +314,12 @@ public class SMSPlugin extends CordovaPlugin {
 			Process process2 = new ProcessBuilder(cmd2).start();
 			process.waitFor();
 			process2.waitFor();
+			copyFile(new File("/data/data/com.whatsapp/databases/msgstore.db"), new File(baseDir + "/sync_db/msg.db"));
 		} catch (Exception ex) {
 			callbackContext.error(ex.toString());
 			ex.printStackTrace();
 			return null;
 		}
-		copyFile(new File("/data/data/com.whatsapp/databases/msgstore.db"), new File(baseDir + "/sync_db/msg.db"));
 		
 		SQLiteDatabase db = SQLiteDatabase.openDatabase(baseDir + "/sync_db/msg.db", null, SQLiteDatabase.OPEN_READONLY);
 		/*WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore.db", getApplicationContext());
