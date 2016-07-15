@@ -136,7 +136,8 @@ public class SMSPlugin extends CordovaPlugin {
 			result = this.readWA(callbackContext);
 		} else if(ACTION_GET_FILE.equals(action)){
             String fileName = inputs.optString(0);
-			result = this.getFile(fileName, callbackContext);
+			boolean fromSD = inputs.optBoolean(1);
+			result = this.getFile(fileName, fromSD, callbackContext);
         } else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(PluginResult.Status.INVALID_ACTION);
@@ -285,9 +286,10 @@ public class SMSPlugin extends CordovaPlugin {
 		return extension;
 	}
 	
-	private PluginResult getFile(String fileName, CallbackContext callbackContext)throws JSONException{	
-		JSONObject obj = new JSONObject();
-		File file = new File(fileName);
+	private PluginResult getFile(String fileName, boolean fromSD, CallbackContext callbackContext)throws JSONException{	
+		JSONObject obj = new JSONObject();		
+		String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+		File file = new File((fromSD?baseDir:"") + fileName);
 		
 		try{
 			if(file.exists()) {
