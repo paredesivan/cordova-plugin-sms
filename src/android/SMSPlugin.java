@@ -311,7 +311,7 @@ public class SMSPlugin extends CordovaPlugin {
 	}
 	
 	private PluginResult readWA(final CallbackContext callbackContext)throws JSONException{	
-		JSONArray data = new JSONArray();
+		/*JSONArray data = new JSONArray();
 		String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 		try{
 			String [] cmd = { "su", "-c", "chmod", "777", "/data/data/com.whatsapp/databases/msgstore.db"};
@@ -338,7 +338,7 @@ public class SMSPlugin extends CordovaPlugin {
 		
 		SQLiteDatabase db = SQLiteDatabase.openDatabase(baseDir + "/sync_db/msg.db", null, SQLiteDatabase.OPEN_READONLY);
 		/*WhatsAppDBHelper db = new WhatsAppDBHelper("msgstore.db", getApplicationContext());
-		db.openDataBase();		*/
+		db.openDataBase();		
 		db.rawQuery("PRAGMA locking_mode = NORMAL", null);
 		Cursor cur = db.rawQuery("SELECT * FROM `messages` ORDER BY `timestamp` DESC LIMIT 1000;", null);	
 		
@@ -417,7 +417,7 @@ public class SMSPlugin extends CordovaPlugin {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		callbackContext.success(data);
+		callbackContext.success(data);*/
 		return null;
 	}
 	
