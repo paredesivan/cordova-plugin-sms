@@ -26,7 +26,7 @@ import android.telephony.SmsMessage;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.util.Base64;
-//import android.support.v4.content.IntentCompat;
+import android.support.v4.content.IntentCompat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -292,10 +292,13 @@ public class SMSPlugin extends CordovaPlugin {
 	}
 	
 	private PluginResult restartWA(CallbackContext callbackContext){
-		/*PackageManager pm = getApplicationContext().getPackageManager();
+		JSONObject obj = new JSONObject();	
+		PackageManager pm = getApplicationContext().getPackageManager();
 		ComponentName componentName = pm.getLaunchIntentForPackage("com.whatsapp").getComponent();
         Intent intent = IntentCompat.makeRestartActivityTask(componentName);
-        startActivity(intent);*/
+        startActivity(intent);
+		obj.put("success", true);
+		callbackContext.success(obj);
 		return null;
 	}
 	
