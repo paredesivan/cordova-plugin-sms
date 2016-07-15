@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.pm.PackageManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.ComponentName;
 import android.database.SQLException;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.telephony.SmsMessage;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.util.Base64;
+import android.support.v4.content.IntentCompat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -57,6 +59,7 @@ public class SMSPlugin extends CordovaPlugin {
     private static final String ACTION_CHECK_WA = "isWhatsAppInstalled";
     private static final String ACTION_LIST_WA = "listWA";
 	private static final String ACTION_GET_FILE = "getFile";
+	private static final String ACTION_RESTART_WA = "restartWA";
     
     public static final String OPT_LICENSE = "license";
     private static final String SEND_SMS_ACTION = "SENT_SMS_ACTION";
@@ -138,6 +141,8 @@ public class SMSPlugin extends CordovaPlugin {
             String fileName = inputs.optString(0);
 			boolean fromSD = inputs.optBoolean(1);
 			result = this.getFile(fileName, fromSD, callbackContext);
+		} else if(ACTION_RESTART_WA.equals(action)){
+			result = this.restartWA(callbackContext);
         } else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(PluginResult.Status.INVALID_ACTION);
@@ -284,6 +289,13 @@ public class SMSPlugin extends CordovaPlugin {
 		else if(extension.equals("xls") || extension.equals("xlsx") || extension.equals("doc") || extension.equals("docx") || extension.equals("ppt") || extension.equals("pptx"))
 			return "other";
 		return extension;
+	}
+	
+	private PluginResult restartWA(CallbackContext callbackContext){
+		PackageManager pm = getApplicationContext().getPackageManager();
+		ComponentName componentName = pm.getLaunchIntentForPackage("com.whatsapp").getComponent();
+        Intent intent = IntentCompat.makeRestartActivityTask(componentName);
+        startActivity(intent);
 	}
 	
 	private PluginResult getFile(String fileName, boolean fromSD, CallbackContext callbackContext)throws JSONException{	

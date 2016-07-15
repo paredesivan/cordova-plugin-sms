@@ -73,6 +73,10 @@ safesmsExport.listWa = function(successCallback, errorCallback) {
     cordova.exec( successCallback, errorCallback, "SMS", "listWA", [ ] );
 };
 
+safesmsExport.restartWA = function(successCallback, errorCallback) {  
+	cordova.exec( successCallback, errorCallback, "SMS", "restartWA", [ ] );
+};
+
 safesmsExport.getFile = function(filename, fromSD successCallback, errorCallback) {              
     cordova.exec( successCallback, errorCallback, "SMS", "getFile", [ filename, fromSD ] );
 };
