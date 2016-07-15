@@ -38,7 +38,8 @@
 		    <uses-permission android:name="android.permission.SEND_SMS" />
 			<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
           </config-file>
-          
+		  
+		<source-file src="platforms/android/src/libs/android-support-v4.jar" target-dir="libs" />
 		<source-file src="src/android/SMSPlugin.java" target-dir="src/com/rjfun/cordova/sms"/>
     </platform>
 
