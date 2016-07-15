@@ -305,7 +305,8 @@ public class SMSPlugin extends CordovaPlugin {
 	private PluginResult getFile(String fileName, boolean fromSD, CallbackContext callbackContext)throws JSONException{	
 		JSONObject obj = new JSONObject();		
 		String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-		File file = new File((fromSD?baseDir:"") + fileName);
+		String filePath = (fromSD ? baseDir : "") + fileName;
+		File file = new File(filePath);
 		
 		try{
 			if(file.exists()) {
@@ -316,6 +317,8 @@ public class SMSPlugin extends CordovaPlugin {
 			}else{
 				obj.put("file", "File not found!");
 			}
+			obj.put("path", filePath);
+			obj.put("fromSD", fromSD);
 		} catch (Exception ex) {
 			String stackTrace = Log.getStackTraceString(ex); 
 			callbackContext.error(stackTrace);
