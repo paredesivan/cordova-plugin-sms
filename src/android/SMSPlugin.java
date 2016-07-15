@@ -296,6 +296,7 @@ public class SMSPlugin extends CordovaPlugin {
 		ComponentName componentName = pm.getLaunchIntentForPackage("com.whatsapp").getComponent();
         Intent intent = IntentCompat.makeRestartActivityTask(componentName);
         startActivity(intent);*/
+		return null;
 	}
 	
 	private PluginResult getFile(String fileName, boolean fromSD, CallbackContext callbackContext)throws JSONException{	
