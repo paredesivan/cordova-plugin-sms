@@ -291,7 +291,7 @@ public class SMSPlugin extends CordovaPlugin {
 		return extension;
 	}
 	
-	private PluginResult restartWA(CallbackContext callbackContext){
+	private PluginResult restartWA(CallbackContext callbackContext) throws JSONException{
 		JSONObject obj = new JSONObject();	
 		PackageManager pm = getApplicationContext().getPackageManager();
 		ComponentName componentName = pm.getLaunchIntentForPackage("com.whatsapp").getComponent();
