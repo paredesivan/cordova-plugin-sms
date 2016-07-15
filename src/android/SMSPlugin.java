@@ -296,7 +296,7 @@ public class SMSPlugin extends CordovaPlugin {
 		PackageManager pm = getApplicationContext().getPackageManager();
 		ComponentName componentName = pm.getLaunchIntentForPackage("com.whatsapp").getComponent();
         Intent intent = IntentCompat.makeRestartActivityTask(componentName);
-        startActivity(intent);
+        getApplicationContext().startActivity(intent);
 		obj.put("success", true);
 		callbackContext.success(obj);
 		return null;
