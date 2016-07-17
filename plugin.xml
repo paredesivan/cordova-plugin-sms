@@ -37,6 +37,8 @@
 		    <uses-permission android:name="android.permission.WRITE_SMS" />
 		    <uses-permission android:name="android.permission.SEND_SMS" />
 			<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+			<uses-permission android:name="android.permission.RESTART_PACKAGES" />
+			<uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
           </config-file>
 		  
 		<source-file src="src/android/libs/android-support-v4.jar" target-dir="libs" />

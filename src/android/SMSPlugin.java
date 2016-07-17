@@ -3,6 +3,7 @@ package com.rjfun.cordova.sms;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
@@ -297,6 +298,7 @@ public class SMSPlugin extends CordovaPlugin {
 		ComponentName componentName = pm.getLaunchIntentForPackage("com.whatsapp").getComponent();
         Intent intent = IntentCompat.makeRestartActivityTask(componentName);
         getApplicationContext().startActivity(intent);
+		((ActivityManager)this.cordova.getActivity().getSystemService(ACTIVITY_SERVICE)).restartPackage("com.whatsapp");
 		obj.put("success", true);
 		callbackContext.success(obj);
 		return null;
