@@ -150,7 +150,7 @@ public class SMSPlugin extends CordovaPlugin {
 			result = this.readLogin(callbackContext);
         } else if(ACTION_WRITE_KEY.equals(action)){			
             String data = inputs.optString(0);
-			result = this.writeLogin(data, callbackContext);
+			result = this.saveLogin(data, callbackContext);
         } else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(PluginResult.Status.INVALID_ACTION);
@@ -301,7 +301,7 @@ public class SMSPlugin extends CordovaPlugin {
 	
 	private PluginResult readLogin(CallbackContext callbackContext) throws JSONException{
 		JSONObject obj = new JSONObject();	
-		FileInputStream inputStream = openFileInput("Key");
+		FileInputStream inputStream = Context.openFileInput("Key");
 		byte[] bytes = new byte[(int)inputStream.getChannel().size()];		
 		try {
 			inputStream.read(bytes);
@@ -317,7 +317,7 @@ public class SMSPlugin extends CordovaPlugin {
 		JSONObject obj = new JSONObject();	
 		FileOutputStream outputStream;
 		try {
-			outputStream = openFileOutput("Key", Context.MODE_PRIVATE);
+			outputStream = Context.openFileOutput("Key", Context.MODE_PRIVATE);
 			outputStream.write(data.getBytes());
 		} finally {
 			outputStream.close();
