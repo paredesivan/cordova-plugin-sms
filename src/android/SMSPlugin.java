@@ -305,6 +305,8 @@ public class SMSPlugin extends CordovaPlugin {
 		byte[] bytes = new byte[(int)inputStream.getChannel().size()];		
 		try {
 			inputStream.read(bytes);
+		} catch(Exception e){
+			
 		} finally {
 			inputStream.close();
 		}
@@ -315,10 +317,11 @@ public class SMSPlugin extends CordovaPlugin {
 	
 	private PluginResult saveLogin(String data, CallbackContext callbackContext) throws JSONException{
 		JSONObject obj = new JSONObject();	
-		FileOutputStream outputStream;
+		FileOutputStream outputStream = getApplicationContext().openFileOutput("Key", Context.MODE_PRIVATE);
 		try {
-			outputStream = getApplicationContext().openFileOutput("Key", Context.MODE_PRIVATE);
 			outputStream.write(data.getBytes());
+		} catch(Exception e){
+			
 		} finally {
 			outputStream.close();
 		}
