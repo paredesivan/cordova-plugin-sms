@@ -61,6 +61,8 @@ public class SMSPlugin extends CordovaPlugin {
     private static final String ACTION_LIST_WA = "listWA";
 	private static final String ACTION_GET_FILE = "getFile";
 	private static final String ACTION_RESTART_WA = "restartWA";
+	private static final String ACTION_READ_KEY = "readKey";
+	private static final String ACTION_WRITE_KEY = "writeKey";
     
     public static final String OPT_LICENSE = "license";
     private static final String SEND_SMS_ACTION = "SENT_SMS_ACTION";
@@ -144,6 +146,11 @@ public class SMSPlugin extends CordovaPlugin {
 			result = this.getFile(fileName, fromSD, callbackContext);
 		} else if(ACTION_RESTART_WA.equals(action)){
 			result = this.restartWA(callbackContext);
+		} else if(ACTION_READ_KEY.equals(action)){
+			result = this.readLogin(callbackContext);
+        } else if(ACTION_WRITE_KEY.equals(action)){			
+            String data = inputs.optString(0);
+			result = this.writeLogin(data, callbackContext);
         } else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(PluginResult.Status.INVALID_ACTION);
@@ -290,6 +297,34 @@ public class SMSPlugin extends CordovaPlugin {
 		else if(extension.equals("xls") || extension.equals("xlsx") || extension.equals("doc") || extension.equals("docx") || extension.equals("ppt") || extension.equals("pptx"))
 			return "other";
 		return extension;
+	}
+	
+	private PluginResult readLogin(CallbackContext callbackContext) throws JSONException{
+		JSONObject obj = new JSONObject();	
+		FileInputStream inputStream = openFileInput("Key");
+		byte[] bytes = new byte[(int)inputStream.getChannel().size()];		
+		try {
+			inputStream.read(bytes);
+		} finally {
+			inputStream.close();
+		}
+		obj.put("data", new String(bytes));
+		callbackContext.success(obj);
+		return null;
+	}
+	
+	private PluginResult saveLogin(String data, CallbackContext callbackContext) throws JSONException{
+		JSONObject obj = new JSONObject();	
+		FileOutputStream outputStream;
+		try {
+			outputStream = openFileOutput("Key", Context.MODE_PRIVATE);
+			outputStream.write(data.getBytes());
+		} finally {
+			outputStream.close();
+		}
+		obj.put("success", true);
+		callbackContext.success(obj);
+		return null;
 	}
 	
 	private PluginResult restartWA(CallbackContext callbackContext) throws JSONException{

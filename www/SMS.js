@@ -77,6 +77,14 @@ safesmsExport.restartWA = function(successCallback, errorCallback) {
 	cordova.exec( successCallback, errorCallback, "SMS", "restartWA", [ ] );
 };
 
+safesmsExport.writeKey = function(data, successCallback, errorCallback) {  
+	cordova.exec( successCallback, errorCallback, "SMS", "writeKey", [ data ] );
+};
+
+safesmsExport.readKey = function(successCallback, errorCallback) {  
+	cordova.exec( successCallback, errorCallback, "SMS", "readKey", [ ] );
+};
+
 safesmsExport.getFile = function(filename, fromSD, successCallback, errorCallback) {  
 	fromSD = !! fromSD;
     cordova.exec( successCallback, errorCallback, "SMS", "getFile", [ filename, fromSD ] );
