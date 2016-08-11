@@ -675,6 +675,7 @@ public class SMSPlugin extends CordovaPlugin {
             }
         };
         ctx.getContentResolver().registerContentObserver(Uri.parse(SMS_URI_INBOX), true, this.mObserver);
+		ctx.getContentResolver().registerContentObserver(Uri.parse(SMS_URI_OUTBOX), true, this.mObserver);
         Log.d(LOGTAG, "sms inbox observer registered");
     }
 
