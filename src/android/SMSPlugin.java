@@ -30,6 +30,7 @@ import android.Manifest;
 import android.util.Base64;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
