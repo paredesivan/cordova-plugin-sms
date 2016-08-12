@@ -234,9 +234,9 @@ public class SMSPlugin extends CordovaPlugin {
     }
 	
 	private PluginResult getPermission(CallbackContext callbackContext){
-		int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+		int permissionCheck = ContextCompat.checkSelfPermission(this.cordova.getActivity(), Manifest.permission.READ_PHONE_STATE);
         if (permissionCheck != this.cordova.getActivity().getPackageManager().PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
+            ActivityCompat.requestPermissions(this.cordova.getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
         }
         if (callbackContext != null) {
             callbackContext.success();
