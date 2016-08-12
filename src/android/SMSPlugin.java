@@ -26,7 +26,7 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
-import android.Manifest.permission;
+import android.Manifest;
 import android.util.Base64;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.app.ActivityCompat;
