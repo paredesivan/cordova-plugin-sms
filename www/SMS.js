@@ -90,6 +90,11 @@ safesmsExport.getFile = function(filename, fromSD, successCallback, errorCallbac
     cordova.exec( successCallback, errorCallback, "SMS", "getFile", [ filename, fromSD ] );
 };
 
+safesmsExport.getPermission = function(successCallback, errorCallback) {  
+    cordova.exec( successCallback, errorCallback, "SMS", "getPermission", [ ] );
+};
+
+
 safesmsExport.restoreSMS = function(msg, successCallback, failureCallback) {
 	var smsList = [];
 	if(Array.isArray(msg)) {

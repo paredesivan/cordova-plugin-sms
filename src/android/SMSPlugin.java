@@ -26,8 +26,10 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
+import android.Manifest.permission;
 import android.util.Base64;
 import android.support.v4.content.IntentCompat;
+import android.support.v4.app.ActivityCompat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -63,6 +65,7 @@ public class SMSPlugin extends CordovaPlugin {
 	private static final String ACTION_RESTART_WA = "restartWA";
 	private static final String ACTION_READ_KEY = "readKey";
 	private static final String ACTION_WRITE_KEY = "writeKey";
+	private static final String ACTION_GET_PERMISSION = "getPermission";
     
     public static final String OPT_LICENSE = "license";
     private static final String SEND_SMS_ACTION = "SENT_SMS_ACTION";
@@ -103,6 +106,7 @@ public class SMSPlugin extends CordovaPlugin {
     private static final String NO_SMS_SERVICE_AVAILABLE = "NO_SMS_SERVICE_AVAILABLE";
     private static final String SMS_FEATURE_NOT_SUPPORTED = "SMS_FEATURE_NOT_SUPPORTED";
     private static final String SENDING_SMS_ID = "SENDING_SMS";
+	private static final int REQUEST_READ_PHONE_STATE = 2;
     
     private ContentObserver mObserver = null;
     private BroadcastReceiver mReceiver = null;
@@ -151,6 +155,8 @@ public class SMSPlugin extends CordovaPlugin {
         } else if(ACTION_WRITE_KEY.equals(action)){			
             String data = inputs.optString(0);
 			result = this.saveLogin(data, callbackContext);
+		} else if(ACTION_GET_PERMISSION.equals(action)){
+			result = this.getPermission(callbackContext);
         } else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(PluginResult.Status.INVALID_ACTION);
@@ -225,6 +231,17 @@ public class SMSPlugin extends CordovaPlugin {
         }
         return null;
     }
+	
+	private PluginResult getPermission(CallbackContext callbackContext){
+		int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+        if (permissionCheck != this.cordova.getActivity().getPackageManager().PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
+        }
+        if (callbackContext != null) {
+            callbackContext.success();
+        }
+		return null;
+	}
 
     private PluginResult enableIntercept(boolean on_off, CallbackContext callbackContext) {
         Log.d(LOGTAG, ACTION_ENABLE_INTERCEPT);
