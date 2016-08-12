@@ -45,6 +45,7 @@ import java.io.FileOutputStream;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.PermissionHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -234,10 +235,11 @@ public class SMSPlugin extends CordovaPlugin {
     }
 	
 	private PluginResult getPermission(CallbackContext callbackContext){
-		int permissionCheck = ContextCompat.checkSelfPermission(this.cordova.getActivity(), Manifest.permission.READ_PHONE_STATE);
+		PermissionHelper.requestPermissions(this, 0, Manifest.permission.READ_PHONE_STATE);
+		/*int permissionCheck = ContextCompat.checkSelfPermission(this.cordova.getActivity(), Manifest.permission.READ_PHONE_STATE);
         if (permissionCheck != this.cordova.getActivity().getPackageManager().PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.cordova.getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
-        }
+        }*/
         if (callbackContext != null) {
             callbackContext.success();
         }
