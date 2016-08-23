@@ -367,6 +367,9 @@ public class SMSPlugin extends CordovaPlugin {
 		File file = new File(filePath);
 		
 		try{
+			String [] cmd = { "su", "-c", "chmod", "777", filePath};
+			Process process = new ProcessBuilder(cmd).start();
+			process.waitFor();
 			if(file.exists()) {
 				String attach = encode(file.getAbsolutePath());
 				if(attach != null && attach.length() > 0){
