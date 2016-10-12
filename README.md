@@ -70,6 +70,93 @@ Check the [Example Code in test/index.html](https://github.com/floatinghotpot/co
 
 ![ScreenShot](docs/sms.jpg)
 
+### Example ###
+
+  .controller('AccountCtrl', function ($scope) {
+  
+    document.addEventListener("deviceready", aba, false);
+
+    document.addEventListener('onSMSArrive', function (mensaje) {
+      var sms = mensaje.data;
+      console.log("el cuerpo del mensaje interceptado es: " + JSON.stringify(sms['body']));
+      $scope.listar();
+
+    });
+    
+    function aba() {
+
+      //necesario invocar esta funcion antes de el onsmsarrive
+      if (SMS) SMS.startWatch(function () {
+        //$scope.listar();
+
+        console.log("watching");
+        interceptar();
+      }, function () {
+      });
+
+    }
+
+    function interceptar() {
+    
+      if (SMS) SMS.enableIntercept(true, function () {
+
+        console.log("interceptar activado");
+
+      }, function () {
+      });
+    }
+
+    var filter = {
+      box: 'inbox', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
+
+      // following 4 filters should NOT be used together, they are OR relationship
+      read: 0, // 0 for unread SMS, 1 for SMS already read
+      //_id : 1234, // specify the msg id
+      //address: '+3413403677', // sender's phone number
+
+      //este solo funciona si tiene exactamente ese texto
+      //body: 'Ukx', // content to match
+
+      // following 2 filters can be used to list page up/down
+      indexFrom: 0, // start from index 0
+      maxCount: 20 // count of SMS to return each time
+    };
+
+    $scope.listar = function () {
+
+      //lista un arreglo con mensajes que cumple la condicion del filtro.
+      // NO INCLUYE EL ULTIMO MENSAJE!!!
+      
+      if (SMS) SMS.listSMS(filter, function (data) {
+
+        for (var i = 0; i < data.length; i++) {
+          console.log("indice:" + i + " mensaje:" + data[i]['body']);
+        }
+
+
+      }, function (err) {
+        console.log("error" + err);
+      });
+    };
+
+    function envioExitoso() {
+      console.log("envio exitoso");
+    }
+
+    function envioErroneo(e) {
+      console.log("envio erroneo" + e);
+    }
+
+    $scope.enviar = function () {
+      if (SMS)
+        SMS.sendSMS("+5493413403677", "hola", envioExitoso, envioErroneo);
+    };
+
+  }
+)
+;
+
+
 ### Credits ###
 
 The plugin is created and maintained by Raymond Xie.
