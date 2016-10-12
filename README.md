@@ -72,7 +72,21 @@ Check the [Example Code in test/index.html](https://github.com/floatinghotpot/co
 
 ### Example ###
 
-  .controller('AccountCtrl', function ($scope) {
+html
+
+	<ion-view view-title="Account" ng-controller="AccountCtrl">
+	  <ion-content>
+	    <ion-list>
+
+	      <button ng-click="enviar()">enviar HOLA</button>
+
+	    </ion-list>
+	  </ion-content>
+	</ion-view>
+
+javascript file
+
+    .controller('AccountCtrl', function ($scope) {
   
     document.addEventListener("deviceready", aba, false);
 
