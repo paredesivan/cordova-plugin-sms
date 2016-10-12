@@ -612,9 +612,9 @@ public class SMSPlugin extends CordovaPlugin {
     private void onSMSArrive(JSONObject json) {
         String from = json.optString(ADDRESS);
         String content = json.optString(BODY);
-        if (from.equals(this.lastFrom) && content.equals(this.lastContent)) {
-            return;
-        }
+//         if (from.equals(this.lastFrom) && content.equals(this.lastContent)) {
+//             return;
+//         }
         this.lastFrom = from;
         this.lastContent = content;
         this.fireEvent("onSMSArrive", json);
